@@ -1,0 +1,17 @@
+{
+    "name": "ButtonControls",
+    "maps": [],
+    "controlSchemes": [
+        {
+            "name": "JumpingControlScheme",
+            "bindingGroup": "JumpingControlScheme",
+            "devices": [
+                {
+                    "devicePath": "<OculusTouchController>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
