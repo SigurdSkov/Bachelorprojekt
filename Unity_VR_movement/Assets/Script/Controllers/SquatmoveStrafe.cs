@@ -57,7 +57,7 @@ public class SquatmoveStrafe : MonoBehaviour
         //    positions.Enqueue(TempVector);
         //}
         
-        CameraTransform = this.gameObject.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0);
+        CameraTransform = gameObject.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0);
         PreviousCameraPositionY = CameraTransform.transform.localPosition.y;
         //Reference til rotationX = CameraTransform.eulerAngles.x;
 

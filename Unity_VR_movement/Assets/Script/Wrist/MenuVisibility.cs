@@ -29,7 +29,6 @@ public class MenuVisibility : MonoBehaviour
     {
         rotation = controllerRotation.localEulerAngles.z;//transform.parent.parent.parent.parent.localEulerAngles.z;
         //Debug.Log(transform.localEulerAngles.z); Altid 0?
-        Debug.Log(rotation);
         //rotation = transform.parent.parent.parent.parent.rotation.z;
         // Set the transparency of the object based on its rotation
         if ((rotation > 130 && rotation < 280)) //|| rotation > 0 && rotation < 90)

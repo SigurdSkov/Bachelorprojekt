@@ -30,8 +30,8 @@ public class Jumpmove : MonoBehaviour
 
     void Start()
     {
-        CameraTransform = this.gameObject.transform.GetChild(0).transform;
-        body = this.gameObject.GetComponent<Rigidbody>();
+        CameraTransform = gameObject.transform.GetChild(0).transform;
+        body = gameObject.GetComponent<Rigidbody>();
         //buttonX = GetComponent<InputActionAsset>().FindAction("XR/PrimaryButton");
         //buttonX.performed += ;
     }

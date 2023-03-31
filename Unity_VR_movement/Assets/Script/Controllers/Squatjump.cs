@@ -51,7 +51,7 @@ public class Squatjump : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CameraTransform = this.gameObject.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0);
+        CameraTransform = gameObject.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0);
         PreviousCameraPositionY = CameraTransform.transform.localPosition.y;
         body = GetComponent<Rigidbody>();
         body.drag = 0;

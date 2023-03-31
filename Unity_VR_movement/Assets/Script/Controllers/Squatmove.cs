@@ -22,7 +22,7 @@ public class Squatmove : MonoBehaviour
     private float CurrentPos;
     void Start()
     {
-        CameraTransform = this.gameObject.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0);
+        CameraTransform = gameObject.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0);
         PreviousCameraPositionY = CameraTransform.transform.localPosition.y;
         body = GetComponent<Rigidbody>();
     }

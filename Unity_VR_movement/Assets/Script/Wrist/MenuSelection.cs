@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -16,31 +17,41 @@ using static UnityEditor.PlayerSettings;
 
 public class MenuSelection : MonoBehaviour
 {
-    GameObject Border;
-    List<GameObject> ButtonList;
     // Start is called before the first frame update
-    float rotation = 0;
-    float FadeFloat = 0;
-
-    UnityEngine.UI.Image BorderRef;
-
-    UnityEngine.Color BorderColorActive = new UnityEngine.Color(1,1,1,1);
-    UnityEngine.Color BorderColorInActive = new UnityEngine.Color(1, 1, 1, 0);
+    //List<UnityEngine.Component> scriptList;
+    List<MonoScript> scripts = new List<MonoScript>();
 
     //MonoScript[] MoveScriptsRef;// = transform.parent.parent.parent.parent.parent.parent.GetComponent<MoveScriptController>().getMoveScripts
     GameObject Character;
     MonoScript activeScript;
 
+    [SerializeField]
+    string folderPath = "Script/Controllers/";
+
     void Start()
     {
-        ButtonList = new List<GameObject>
-        {
-            this.transform.parent.gameObject
-        };
-        BorderRef = this.transform.parent.parent.gameObject.GetComponent<UnityEngine.UI.Image>();
+        //DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
+        //FileInfo[] fileInfo = directoryInfo.GetFiles("*.cs");
 
-        Character = transform.parent.parent.parent.parent.parent.parent.GameObject(); //Har nok ændret sig
+        foreach (string filePath in Directory.GetFiles(folderPath, "*.cs"))
+        {
+            MonoScript script = AssetDatabase.LoadAssetAtPath<MonoScript>(filePath);
+            if (script != null)
+            {
+                //Debug.Log(script.name);
+                scripts.Add(script);
+                //UnityEngine.Component scriptComponent = GetComponent(script.name);
+                //components.Add(scriptComponent);
+            }
+            else
+            {
+                Debug.LogWarning("Could not load script asset: " + filePath);
+            }
+        }
+
+        Character = transform.parent.parent.parent.parent.parent.GameObject(); //Har nok ændret sig
         //ActivateSquatWalk();
+        //Debug.Log(Character);
     }
 
     // Update is called once per frame
@@ -67,13 +78,13 @@ public class MenuSelection : MonoBehaviour
         switch (inputData)
         {
             case 0:
-                Debug.Log("SquatWalk");/*ActivateSquatWalk();*/ break;
+                ActivateSquatWalk(); break;//Debug.Log("SquatWalk");/*ActivateSquatWalk();*/ break;
             case 1:
-                Debug.Log("SquatJump");/*ActivateJump();*/ break;
-            case 2:
                 Debug.Log("SquatStrafe"); break;
-            case 3:
+            case 2:
                 Debug.Log("SquatRetreat"); break;
+            case 3:
+                ActivateJump(); break; //Debug.Log("SquatJump");/**/ break;
             case 4:
                 Debug.Log("SquatJumpStraightUp"); break;
             case 5:
@@ -99,22 +110,27 @@ public class MenuSelection : MonoBehaviour
 
     public void ActivateSquatWalk()
     {
-        Destroy(Character.GetComponent<MonoScript>());
-        Character.AddComponent<Squatjump>();
+        Debug.Log("SquatWalk");
+        foreach (UnityEngine.Component component in Character.GetComponents<UnityEngine.Component>())
+        {
+            Debug.Log(component.GetType().Name);
+            foreach (MonoScript script in scripts)
+            {
+                if (script.name == component.GetType().Name)
+                { /*Debug.Log("Will remove: " + component);*/ 
+                    Destroy(component); 
+                    break; 
+                }
+            }
+        }
+        Character.AddComponent<Squatmove>();
     }
 
     public void ActivateJump()
     {
-        //MonoScript JumpingScript;// = transform.parent.parent.parent.parent.parent.parent.GetComponent<Squatjump>();
-
-        //foreach (MonoScript script in MoveScriptsRef)
-        //{
-        //    if (script == GetComponent<Squatjump>()) { JumpingScript = script; }
-        //    Destroy(script);
-        //}
-
-        //Destroys some script... How do I know which one?
-        Destroy(Character.GetComponent<MonoScript>()); 
+        Destroy(Character.GetComponent<Squatmove>());
         Character.AddComponent<Squatjump>();
     }
+
+    //En for hvert script... Derefter test scripts... Derefter lav nogle flere scripts
 }
