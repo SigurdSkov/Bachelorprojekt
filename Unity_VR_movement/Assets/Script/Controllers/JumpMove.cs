@@ -9,7 +9,7 @@ using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using JumpingButtonMap;
 using Unity.VisualScripting;
 
-public class JumpMove : MonoBehaviour
+public class Jumpmove : MonoBehaviour
 {
     // Start is called before the first frame update
     float StandardHeight = 1.8f;
@@ -18,7 +18,7 @@ public class JumpMove : MonoBehaviour
     float previousHeight = 0;
     float currentHeight = 0;
     [SerializeField]
-    float speed;
+    float speed = 10;
 
 
     //XRNode controllerLeft = XRNode.LeftHand;

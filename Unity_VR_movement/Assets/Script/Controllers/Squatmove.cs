@@ -16,7 +16,7 @@ public class Squatmove : MonoBehaviour
     Transform CameraTransform;
 
     [SerializeField]
-    private float speed;
+    private float speed = 10;
     Rigidbody body;
 
     private float CurrentPos;

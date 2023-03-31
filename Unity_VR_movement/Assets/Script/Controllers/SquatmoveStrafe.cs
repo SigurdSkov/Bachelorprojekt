@@ -37,7 +37,7 @@ public class SquatmoveStrafe : MonoBehaviour
     Transform CameraTransform;
 
     [SerializeField]
-    private float speed;
+    private float speed = 10;
 
     //MATHIAS HJÆLP
     Rigidbody body;
