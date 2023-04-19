@@ -1,61 +1,72 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
 using Unity.XR.CoreUtils;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-
-public class SquatjumpUp : MonoBehaviour
+public class Squatmovediagonal : MonoBehaviour
 {
-    private double timeCounter = 0;
-    private double sendRate = 4000;
+    private const int PositionsSize = 10; //Size of queue
+    private Queue<Vector3> positions = new Queue<Vector3>(); //queue of saved positions
+
+    private double timeCounter = 0; //Count up
+    private double sendRate = 4000; // save position every 4000 milliseconds (4 seconds)
     private float highestHigh = float.MinValue;
-    private float SquatThreshold = 0.35f;
+    private float SquatThreshold = 0.35f; // 0.2 units reduction in height is considered a squat
     private float PreviousCameraPositionY = 0;
-    private bool SquatStatus = false;
     Transform CameraTransform;
 
-
-    private float speed = 10;
-
-
+    [SerializeField]
+    private float speed = 30;
     Rigidbody body;
 
+    private bool right = true;
+    Vector3 moveDirection;
+    Vector3 forward;
+    private bool moving = false;
+
     private float CurrentPos;
-
-    private bool Grounded = true;
-
-    // Start is called before the first frame update
     void Start()
     {
         CameraTransform = gameObject.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0);
-        PreviousCameraPositionY = CameraTransform.transform.position.y;
+        PreviousCameraPositionY = CameraTransform.transform.localPosition.y;
         body = GetComponent<Rigidbody>();
-        body.drag = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Grounded)
-        {
-            UpdateHighestHigh();
-        }
-        SquatCheck(SquatStatus);
+        UpdateHighestHigh();
+        bool SquatStatus = SquatCheck();
         if (SquatStatus) //Føltes som om man kunne rykke disse kald ud, så de sker sjælnere. Ikke sikker på om jeg bør være bange for at de bliver kaldt for ofte
         {
             if (MoveUpCheck())
             {
-                //Indsæt en counter her, gang addforce med counteren - lowest low
+                moving = true;
+                if (!right)
+                    moveDirection = moveDirection * -1;
+                moveDirection.y = 0;
+                body.AddForce(moveDirection * speed/2 + forward * speed/2, ForceMode.Force);
+                Debug.Log(this.GetType().ToString() + ": Force added");
+
             }
+            //BLIVER ALDRIG KALDT
             if (highestHigh - PreviousCameraPositionY < 0.1 && highestHigh - PreviousCameraPositionY > -0.1) //Check if ~max position is reached. Teknisk set muligt at skippe, hvis man bevæger sig 20cm på en frame... Derfor er "else" fjernet
             {
-                Vector3 upMove = CameraTransform.up;
-                upMove.x = 0;
-                upMove.z = 0;
-                body.AddForce(upMove * speed, ForceMode.Impulse);
-                Debug.Log(this.GetType().ToString() + ": Force added");
                 SquatStatus = false;
                 highestHigh = float.MinValue;
+            }
+        }
+        else
+        {
+            if (moving == true)
+            {
+                if (right)
+                    right = false;
+                else
+                    right = true;
+                moving = false;
             }
         }
 
@@ -64,7 +75,6 @@ public class SquatjumpUp : MonoBehaviour
         //Timer
         if (SquatStatus)
         {
-            //Timer skal sættes markant ned
             timeCounter += Time.deltaTime * 1000;
             if (timeCounter > sendRate)
             {
@@ -72,22 +82,6 @@ public class SquatjumpUp : MonoBehaviour
                 highestHigh = float.MinValue;
                 timeCounter = 0;
             }
-        }
-    }
-
-    void OnCollisionEnter(Collision theCollision)
-    {
-        if (theCollision.gameObject.name == "Ground") //Ad det er en hacky løsning
-        {
-            Debug.Log("Grounded");
-            Grounded = true;
-        }
-    }
-    void OnCollisionExit(Collision theCollision)
-    {
-        if (theCollision.gameObject.name == "Ground") //Ad det er en hacky løsning
-        {
-            Grounded = false;
         }
     }
 
@@ -101,22 +95,22 @@ public class SquatjumpUp : MonoBehaviour
     bool MoveUpCheck() //Checks if position is more than the previous position. Tilføjede 2 centimeter, bare så man ikke flyver 1 meter, fordi man bevægede sig 3 millimeter op. That allows MoveUp. 
     {
         bool MovingUp;
-        if (CameraTransform.transform.position.y > /*Overvej om dette skal være en double*/ PreviousCameraPositionY + 0.0005 && IsLookingProper()) //+0.02 er en mere elegant løsning, end at lave et lowest low check, til at se om er på bunden... Faktisk... Begge kunne virke... En større deadzone ved minimumhøjden
+        if (CameraTransform.transform.position.y > /*Overvej om dette skal være en double*/ PreviousCameraPositionY + 0.001 && IsLookingProper()) //+0.02 er en mere elegant løsning, end at lave et lowest low check, til at se om er på bunden... Faktisk... Begge kunne virke... En større deadzone ved minimumhøjden
             MovingUp = true;
         else
             MovingUp = false;
         return MovingUp; //Kan laves om til en float, hvilket bliver en modifier for hvor hurtigt man squatter
     }
 
-    void SquatCheck(bool AlreadySquatting) //Checks if you're doing a squat
+    bool SquatCheck() //Checks if you're doing a squat
     {
-        if (!AlreadySquatting)
+        if (CurrentPos < highestHigh - SquatThreshold && IsLookingProper()) //Tjek om den er indenfor thresholdet, og rotationen er indenfor 90 grader (45 op, 45 ned)
         {
-            if (CurrentPos < highestHigh - SquatThreshold && IsLookingProper()) //Tjek om den er indenfor thresholdet, og rotationen er indenfor 90 grader (45 op, 45 ned)
-            {
-                SquatStatus = true;
-            }
+            moveDirection = CameraTransform.right;
+            forward = CameraTransform.forward;
+            return true;
         }
+        return false;
     }
 
     bool IsLookingProper() //Checks where you're looking

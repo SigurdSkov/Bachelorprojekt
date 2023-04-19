@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 using JumpingButtonMap;
 using Unity.VisualScripting;
 
-public class Jumpmove : MonoBehaviour
+public class Jumpmoveback : MonoBehaviour
 {
     // Start is called before the first frame update
     float StandardHeight = 5f;
@@ -47,9 +47,9 @@ public class Jumpmove : MonoBehaviour
         if (currentHeight > StandardHeight + 0.05)
         {
             Debug.Log("Moving");
-            Vector3 forward = CameraTransform.forward;
-            forward.y = 0;
-            body.AddForce(forward * speed, ForceMode.Impulse);
+            Vector3 backward = -CameraTransform.forward;
+            backward.y = 0;
+            body.AddForce(backward * speed, ForceMode.Impulse);
             Debug.Log(this.GetType().ToString() + ": Force added");
         }
 

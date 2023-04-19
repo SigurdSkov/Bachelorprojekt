@@ -16,7 +16,7 @@ public class Squatmove : MonoBehaviour
     Transform CameraTransform;
 
     [SerializeField]
-    private float speed = 10;
+    private float speed = 30;
     Rigidbody body;
 
     private float CurrentPos;
@@ -40,6 +40,7 @@ public class Squatmove : MonoBehaviour
                 forward.y = 0;
                 body.AddForce(forward * speed, ForceMode.Force);
                 //Husk at sætte et hegn rundt om der hvor man burde kunne bevæge sig
+                Debug.Log(this.GetType().ToString() + ": Force added");
 
             }
             //BLIVER ALDRIG KALDT
@@ -67,7 +68,7 @@ public class Squatmove : MonoBehaviour
 
     void UpdateHighestHigh()
     {
-        CurrentPos = CameraTransform.localPosition.y;
+        CurrentPos = CameraTransform.position.y;
         if (CurrentPos > highestHigh)
             highestHigh = CurrentPos;
     }

@@ -4,13 +4,21 @@ using Unity.XR.CoreUtils;
 using UnityEngine;
 
 
-public class SquatjumpUp : MonoBehaviour
+public class Squatjumpheadbob : MonoBehaviour
 {
-    private double timeCounter = 0;
-    private double sendRate = 4000;
+    private const int PositionsSize = 10; //Size of queue
+    private Queue<Vector3> positions = new Queue<Vector3>(); //queue of saved positions
+
+    private double timeCounter = 0; //Count up
+    private double sendRate = 4000; // save position every 4000 milliseconds (4 seconds)
     private float highestHigh = float.MinValue;
-    private float SquatThreshold = 0.35f;
+    //private float lowestLow = float.MaxValue;
+    private float SquatThreshold = 0.35f; // 0.2 units reduction in height is considered a squat
+    //private float squatLength = 1f; // length of squat motion
+    //private float squatDist = 0f; // distance moved during a squat
+    //private bool IsSquatting = false; // flag to indicate if currently in a squat
     private float PreviousCameraPositionY = 0;
+    //private bool MovingUp = false;
     private bool SquatStatus = false;
     Transform CameraTransform;
 
@@ -22,7 +30,15 @@ public class SquatjumpUp : MonoBehaviour
 
     private float CurrentPos;
 
-    private bool Grounded = true;
+    //float rotationX;
+
+    private bool Grounded = false;
+
+    private bool bobbed = true;
+    Animator headbobAnimator;
+    private bool flying = false;
+    private float flyTimer = 0;
+    private float legalFlytime = 300;
 
     // Start is called before the first frame update
     void Start()
@@ -31,13 +47,20 @@ public class SquatjumpUp : MonoBehaviour
         PreviousCameraPositionY = CameraTransform.transform.position.y;
         body = GetComponent<Rigidbody>();
         body.drag = 0;
+        headbobAnimator = gameObject.transform.GetChild(0).transform.GetChild(0).GetComponent<Animator>();
+        headbobAnimator.enabled = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        CameraTransform.position = CameraTransform.position + new Vector3(1,0,0);
         if (Grounded)
         {
+            if (!bobbed)
+            {
+                Bob();
+            }
             UpdateHighestHigh();
         }
         SquatCheck(SquatStatus);
@@ -49,13 +72,24 @@ public class SquatjumpUp : MonoBehaviour
             }
             if (highestHigh - PreviousCameraPositionY < 0.1 && highestHigh - PreviousCameraPositionY > -0.1) //Check if ~max position is reached. Teknisk set muligt at skippe, hvis man bevæger sig 20cm på en frame... Derfor er "else" fjernet
             {
-                Vector3 upMove = CameraTransform.up;
-                upMove.x = 0;
-                upMove.z = 0;
-                body.AddForce(upMove * speed, ForceMode.Impulse);
+                body.AddForce((CameraTransform.up + CameraTransform.forward) * speed, ForceMode.Impulse);//(3000-timeCounter)
                 Debug.Log(this.GetType().ToString() + ": Force added");
+                headbobAnimator.SetBool("triggerHeadbob", false);
+                flying = true;
                 SquatStatus = false;
                 highestHigh = float.MinValue;
+            }
+        }
+
+        if (flying == true)
+        {
+            flyTimer += Time.deltaTime * 1000;
+            if (flyTimer > legalFlytime)
+            {
+                flying = false;
+                bobbed = false;
+                flyTimer = 0;
+                Debug.Log("We flying boys");
             }
         }
 
@@ -91,6 +125,19 @@ public class SquatjumpUp : MonoBehaviour
         }
     }
 
+    void Bob()
+    {
+        //headbobAnimator.SetTrigger("land");
+        if (headbobAnimator != null)
+        {
+            //CameraTransform.GetComponent<Animator>().Play("Headbob2");
+            //headbobAnimator.SetTrigger("triggerHeadbob");
+            headbobAnimator.SetBool("triggerHeadbob", true);
+            Debug.Log("Animation has been played");
+            bobbed = true;
+        }
+    }
+
     void UpdateHighestHigh()
     {
         CurrentPos = CameraTransform.position.y;
@@ -110,7 +157,7 @@ public class SquatjumpUp : MonoBehaviour
 
     void SquatCheck(bool AlreadySquatting) //Checks if you're doing a squat
     {
-        if (!AlreadySquatting)
+        if(!AlreadySquatting)
         {
             if (CurrentPos < highestHigh - SquatThreshold && IsLookingProper()) //Tjek om den er indenfor thresholdet, og rotationen er indenfor 90 grader (45 op, 45 ned)
             {

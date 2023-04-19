@@ -4,12 +4,12 @@ using Unity.XR.CoreUtils;
 using UnityEngine;
 
 
-public class SquatjumpUp : MonoBehaviour
+public class Squatjumpslide : MonoBehaviour
 {
-    private double timeCounter = 0;
-    private double sendRate = 4000;
+    private double timeCounter = 0; //Count up
+    private double sendRate = 4000; // save position every 4000 milliseconds (4 seconds)
     private float highestHigh = float.MinValue;
-    private float SquatThreshold = 0.35f;
+    private float SquatThreshold = 0.35f; // 0.2 units reduction in height is considered a squat
     private float PreviousCameraPositionY = 0;
     private bool SquatStatus = false;
     Transform CameraTransform;
@@ -22,7 +22,15 @@ public class SquatjumpUp : MonoBehaviour
 
     private float CurrentPos;
 
+    //float rotationX;
+
     private bool Grounded = true;
+
+    private bool slideMode = false;
+    private float slideTimeCounter = 0;
+
+    [SerializeField]
+    private int coyoteSlideTime = 500;
 
     // Start is called before the first frame update
     void Start()
@@ -38,27 +46,41 @@ public class SquatjumpUp : MonoBehaviour
     {
         if (Grounded)
         {
-            UpdateHighestHigh();
-        }
-        SquatCheck(SquatStatus);
-        if (SquatStatus) //Føltes som om man kunne rykke disse kald ud, så de sker sjælnere. Ikke sikker på om jeg bør være bange for at de bliver kaldt for ofte
-        {
-            if (MoveUpCheck())
+            SquatCheck(SquatStatus);
+            slideTimeCounter += Time.deltaTime * 1000;
+            if (SquatStatus)
             {
-                //Indsæt en counter her, gang addforce med counteren - lowest low
+                //Debug.Log("Squat detected");
+                if (slideTimeCounter < coyoteSlideTime)
+                {
+                    Debug.Log("Coyoteslide detected"); //Coyote slide detected, hvis man 
+                    //body.drag = 0;
+                    //body.angularDrag = 0; //Er dette nok?
+                    body.AddForce(CameraTransform.forward * speed, ForceMode.Impulse); //Dette er i hvert fald en løsning
+                    Debug.Log(this.GetType().ToString() + ": Force added");
+                    //body.drag = 0.05F;
+                    slideTimeCounter = coyoteSlideTime;
+                }
+                if (highestHigh - PreviousCameraPositionY < 0.1 && highestHigh - PreviousCameraPositionY > -0.1) //Check if ~max position is reached. Teknisk set muligt at skippe, hvis man bevæger sig 20cm på en frame... Derfor er "else" fjernet
+                {
+                    //Debug.Log("Squatjumpslide: hoppet");
+                    body.AddForce((CameraTransform.up + CameraTransform.forward) * speed, ForceMode.Impulse);//(3000-timeCounter)
+                    SquatStatus = false;
+                    //highestHigh = float.MinValue;//Dette er problemet.
+                    slideTimeCounter = 0;
+                    body.drag = 0.05F;
+                }
             }
-            if (highestHigh - PreviousCameraPositionY < 0.1 && highestHigh - PreviousCameraPositionY > -0.1) //Check if ~max position is reached. Teknisk set muligt at skippe, hvis man bevæger sig 20cm på en frame... Derfor er "else" fjernet
+            else
             {
-                Vector3 upMove = CameraTransform.up;
-                upMove.x = 0;
-                upMove.z = 0;
-                body.AddForce(upMove * speed, ForceMode.Impulse);
-                Debug.Log(this.GetType().ToString() + ": Force added");
-                SquatStatus = false;
-                highestHigh = float.MinValue;
+                if (slideTimeCounter > coyoteSlideTime)
+                    UpdateHighestHigh();
+                //body.drag = 1;
+                //body.angularDrag = 0.05F;
+                //slideTimeCounter = 0;
             }
         }
-
+        
         PreviousCameraPositionY = CameraTransform.transform.position.y; //Gemmes her, efter alle tjekkene
 
         //Timer
@@ -112,7 +134,7 @@ public class SquatjumpUp : MonoBehaviour
     {
         if (!AlreadySquatting)
         {
-            if (CurrentPos < highestHigh - SquatThreshold && IsLookingProper()) //Tjek om den er indenfor thresholdet, og rotationen er indenfor 90 grader (45 op, 45 ned)
+            if (CameraTransform.position.y < highestHigh - SquatThreshold && IsLookingProper()) //Tjek om den er indenfor thresholdet, og rotationen er indenfor 90 grader (45 op, 45 ned)
             {
                 SquatStatus = true;
             }

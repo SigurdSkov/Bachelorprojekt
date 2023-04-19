@@ -4,47 +4,23 @@ using Unity.XR.CoreUtils;
 using UnityEngine;
 
 
-//Nej... Måske denne?
-//Forhold dig til:
-//Måske rytme?
-//Hvor langt har du bevæget dig siden sidste tjek (hastighed)?
-//Er du under et threshold (er du faktisk ved at dukke dig, og ikke bare ved at kigge ned) - (Squatcheck)?
-//Hvad er vinklen på kameraet?
-//Hvis man er roteret underligt er man måske ved at bukke sig, og ikke ved at lave et squat?
-//Man bevæger sig når man er ved at rejse sig op, ikke når man er ved at dukke sig.
-//Når man dukker sig sættes issquatting til true, hvis man ikke rejser sig op (eller begynder oprejsning), så går issquatting til false.
-//Så er rytmen ikke i orden.
-//Nu giver det måske mening at have en runmode (hvor man bevæger sig når man går ned, forsat man lige er kommet ud af et squat)?
-//Bevægelse skal helst være i den retning man kigger, men ikke rotationsmæssigt... Gå ud at man altid kigger ligeud ifht. det horisontale plan.
-
-
 public class Squatjump : MonoBehaviour
-{
-    private const int PositionsSize = 10; //Size of queue
-    private Queue<Vector3> positions = new Queue<Vector3>(); //queue of saved positions
-
-    private double timeCounter = 0; //Count up
-    private double sendRate = 4000; // save position every 4000 milliseconds (4 seconds)
+{ 
+    private double timeCounter = 0;
+    private double sendRate = 4000;
     private float highestHigh = float.MinValue;
-    //private float lowestLow = float.MaxValue;
-    private float SquatThreshold = 0.35f; // 0.2 units reduction in height is considered a squat
-    //private float squatLength = 1f; // length of squat motion
-    //private float squatDist = 0f; // distance moved during a squat
-    //private bool IsSquatting = false; // flag to indicate if currently in a squat
+    private float SquatThreshold = 0.35f;
     private float PreviousCameraPositionY = 0;
-    //private bool MovingUp = false;
     private bool SquatStatus = false;
     Transform CameraTransform;
 
-    [SerializeField]
-    private float speed = 100;
 
-    //MATHIAS HJÆLP
+    private float speed = 10;
+
+
     Rigidbody body;
 
     private float CurrentPos;
-
-    //float rotationX;
 
     private bool Grounded = true;
 
@@ -52,14 +28,9 @@ public class Squatjump : MonoBehaviour
     void Start()
     {
         CameraTransform = gameObject.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0);
-        PreviousCameraPositionY = CameraTransform.transform.localPosition.y;
+        PreviousCameraPositionY = CameraTransform.transform.position.y;
         body = GetComponent<Rigidbody>();
         body.drag = 0;
-    }
-
-    private void OnEnable()
-    {
-
     }
 
     // Update is called once per frame
@@ -69,9 +40,7 @@ public class Squatjump : MonoBehaviour
         {
             UpdateHighestHigh();
         }
-        //body.AddForce(Vector3.forward*speed, ForceMode.Force);
         SquatCheck(SquatStatus);
-        //SavePosition();
         if (SquatStatus) //Føltes som om man kunne rykke disse kald ud, så de sker sjælnere. Ikke sikker på om jeg bør være bange for at de bliver kaldt for ofte
         {
             if (MoveUpCheck())
@@ -80,7 +49,8 @@ public class Squatjump : MonoBehaviour
             }
             if (highestHigh - PreviousCameraPositionY < 0.1 && highestHigh - PreviousCameraPositionY > -0.1) //Check if ~max position is reached. Teknisk set muligt at skippe, hvis man bevæger sig 20cm på en frame... Derfor er "else" fjernet
             {
-                body.AddForce((CameraTransform.up + CameraTransform.forward) * speed, ForceMode.Impulse);//(3000-timeCounter)
+                body.AddForce((CameraTransform.up + CameraTransform.forward) * speed, ForceMode.Impulse);
+                Debug.Log(this.GetType().ToString() + ": Force added");
                 SquatStatus = false;
                 highestHigh = float.MinValue;
             }
@@ -106,6 +76,7 @@ public class Squatjump : MonoBehaviour
     {
         if (theCollision.gameObject.name == "Ground") //Ad det er en hacky løsning
         {
+            Debug.Log("Grounded");
             Grounded = true;
         }
     }
@@ -119,7 +90,7 @@ public class Squatjump : MonoBehaviour
 
     void UpdateHighestHigh()
     {
-        CurrentPos = CameraTransform.localPosition.y;
+        CurrentPos = CameraTransform.position.y;
         if (CurrentPos > highestHigh)
             highestHigh = CurrentPos;
     }

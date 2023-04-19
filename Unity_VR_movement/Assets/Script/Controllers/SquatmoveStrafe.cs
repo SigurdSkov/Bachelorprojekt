@@ -37,14 +37,15 @@ public class SquatmoveStrafe : MonoBehaviour
     Transform CameraTransform;
 
     [SerializeField]
-    private float speed = 10;
+    private float speed = 20;
 
-    //MATHIAS HJÆLP
     Rigidbody body;
 
     private float CurrentPos;
 
     private bool right = true;
+    Vector3 moveDirection;
+    private bool moving = false;
 
     //float rotationX;
 
@@ -76,25 +77,29 @@ public class SquatmoveStrafe : MonoBehaviour
         {
             if (MoveUpCheck())
             {
-                Debug.Log("Moving");
-                //transform.position = Vector3.Lerp(transform.localPosition, transform.localPosition + CameraTransform.forward, 0.5f); //Find ud af hvor langt, og find også ud af hvor længe. Det skal være mere smooth end det er lige nu
-                //GetComponent<Rigidbody>().velocity = Vector3.forward*Time.deltaTime;
-                Vector3 forward = CameraTransform.right;
+                moving = true;
                 if (!right)
-                {
-                    forward = forward * -1;
-                    right = true;
-                }
-                else
-                    right = false;
-                forward.y = 0;
-                body.AddForce(forward*speed, ForceMode.Force);
+                    moveDirection = moveDirection * -1;
+                moveDirection.y = 0;
+                body.AddForce(moveDirection * speed, ForceMode.Force);
+                Debug.Log(this.GetType().ToString() + ": Force added ");
             }
             //BLIVER ALDRIG KALDT. Fordi squatstatus stopper, og så bliver dette aldrig tjekket
             if (highestHigh - PreviousCameraPositionY < 0.1 && highestHigh - PreviousCameraPositionY > -0.1) //Check if ~max position is reached. Teknisk set muligt at skippe, hvis man bevæger sig 20cm på en frame... Derfor er "else" fjernet
             {
                 SquatStatus = false;
                 highestHigh = float.MinValue;
+            }
+        }
+        else
+        {
+            if (moving == true)
+            {
+                if (right)
+                    right = false;
+                else
+                    right = true;
+                moving = false;
             }
         }
 
@@ -134,6 +139,7 @@ public class SquatmoveStrafe : MonoBehaviour
     {
         if (CurrentPos < highestHigh - SquatThreshold && IsLookingProper()) //Tjek om den er indenfor thresholdet, og rotationen er indenfor 90 grader (45 op, 45 ned)
         {
+            moveDirection = CameraTransform.right;
             return true;
         }
         return false;

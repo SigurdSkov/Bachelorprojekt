@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 using JumpingButtonMap;
 using Unity.VisualScripting;
 
-public class Jumpmove : MonoBehaviour
+public class Jumpjump : MonoBehaviour
 {
     // Start is called before the first frame update
     float StandardHeight = 5f;
@@ -27,8 +27,8 @@ public class Jumpmove : MonoBehaviour
     {
         CameraTransform = gameObject.transform.GetChild(0).GetChild(0).GetChild(0).transform;
         body = gameObject.GetComponent<Rigidbody>();
-        body.drag = 1;
-        body.mass = 2;
+        body.drag = 0.5F;
+        body.mass = 5;
     }
 
     private void Update()
@@ -48,8 +48,8 @@ public class Jumpmove : MonoBehaviour
         {
             Debug.Log("Moving");
             Vector3 forward = CameraTransform.forward;
-            forward.y = 0;
-            body.AddForce(forward * speed, ForceMode.Impulse);
+            Vector3 up = CameraTransform.up;
+            body.AddForce(forward * speed + up * speed, ForceMode.Impulse);
             Debug.Log(this.GetType().ToString() + ": Force added");
         }
 
