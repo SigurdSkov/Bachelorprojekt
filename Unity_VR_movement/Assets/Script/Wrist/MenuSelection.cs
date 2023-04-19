@@ -98,6 +98,8 @@ public class MenuSelection : MonoBehaviour
                 ActivateJumpJumpStraightUp(); break;
             case 14:
                 ActivateJumpJumpDiagonal(); break; //Hopper, men ikke diagonalt
+            case 15:
+                ActivateAddLocomotion(); break;
             default:
                 break;
         }
@@ -225,6 +227,13 @@ public class MenuSelection : MonoBehaviour
     {
         Debug.Log("ActivateJumpJumpDiagonal");
         Character.AddComponent<Jumpjumpdiagonal>();
+    }
+
+    //15
+    public void ActivateAddLocomotion()
+    {
+        Debug.Log("ActivateAddLocomotion");
+        Character.AddComponent<AddLocomotion>();
     }
 
     //En for hvert script... Derefter test scripts... Derefter lav nogle flere scripts

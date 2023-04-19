@@ -32,7 +32,7 @@ public class Squatjumpheadbob : MonoBehaviour
 
     //float rotationX;
 
-    private bool Grounded = false;
+    private bool Grounded = true;
 
     private bool bobbed = true;
     Animator headbobAnimator;
