@@ -56,7 +56,6 @@ public class MenuSelection : MonoBehaviour
         }
 
         Character = transform.parent.parent.parent.parent.parent.GameObject(); //Har nok ændret sig
-        ActivateJumpJumpDiagonal();
     }
 
     // Update is called once per frame
