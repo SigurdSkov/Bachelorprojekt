@@ -11,15 +11,11 @@ public class AddLocomotion : MonoBehaviour
     {
         locomotionSystem = gameObject.transform.GetChild(0).GetChild(1).gameObject;
         locomotionSystem.SetActive(true);
+        Debug.Log(locomotionSystem + " active");
     }
     private void OnDestroy()
     {
         locomotionSystem.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log(locomotionSystem + " inactive");
     }
 }

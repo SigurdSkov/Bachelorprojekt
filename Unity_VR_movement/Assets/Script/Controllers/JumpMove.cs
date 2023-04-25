@@ -52,7 +52,6 @@ public class Jumpmove : MonoBehaviour
             body.AddForce(forward * speed, ForceMode.Impulse);
             Debug.Log(this.GetType().ToString() + ": Force added");
         }
-
         pressed = false;
     }
 
