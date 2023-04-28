@@ -846,7 +846,7 @@ GameObject:
   - component: {fileID: 3949812938869966634}
   - component: {fileID: 3949812938869966635}
   - component: {fileID: 3949812938595646706}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CV4_Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}

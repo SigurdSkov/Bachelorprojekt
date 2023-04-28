@@ -16,7 +16,6 @@ public class Jumpmovestrafe : MonoBehaviour
     float StandardHeight = 5f;
     Transform CameraTransform;
     Rigidbody body;
-    float previousHeight = 0;
     float currentHeight = 0;
     [SerializeField]
     float speed = 1F;
@@ -50,7 +49,6 @@ public class Jumpmovestrafe : MonoBehaviour
 
         if (currentHeight > StandardHeight + 0.05)
         {
-            Debug.Log("Moving");
             moveDirection = CameraTransform.right;
             moving = true;
             if (!right)

@@ -22,6 +22,7 @@ public class GetUp : MonoBehaviour
         leftCube.transform.SetParent(rightHandControllerTransform);
         rightCube.transform.position = Vector3.zero;
         leftCube.transform.position = Vector3.zero;
+        //rightCube.AddComponent(MeshCollider);
     }
 
     // Update is called once per frame

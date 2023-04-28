@@ -16,7 +16,6 @@ public class Jumpjump : MonoBehaviour
     float StandardHeight = 5f;
     Transform CameraTransform;
     Rigidbody body;
-    float previousHeight = 0;
     float currentHeight = 0;
     [SerializeField]
     float speed = 2F;

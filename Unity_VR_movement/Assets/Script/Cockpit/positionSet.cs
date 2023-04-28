@@ -17,7 +17,7 @@ public class positionSet : MonoBehaviour
     void Start()
     {
         speedHandle = transform.GetChild(0).GetChild(0).gameObject;
-        turnHandle = transform.GetChild(0).GetChild(4).gameObject; //Actually tracks the lever
+        turnHandle = transform.GetChild(1).GetChild(0).gameObject; //Actually tracks the lever
     }
 
     // Update is called once per frame
@@ -33,7 +33,8 @@ public class positionSet : MonoBehaviour
             }
             else if (speedHandle.transform.localPosition.x < -0.1f)
             {
-                transform.position = transform.position + new Vector3(-1F, 0, 0);
+                //transform.position = transform.position + new Vector3(-1F, 0, 0);
+                transform.Translate(new Vector3(-1F, 0, 0));
                 speedHandle.transform.Translate(new Vector3(-0.1F, 0, 0));
             }
             timer = 0;

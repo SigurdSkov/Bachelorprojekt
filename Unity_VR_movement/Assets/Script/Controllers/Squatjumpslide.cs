@@ -26,7 +26,6 @@ public class Squatjumpslide : MonoBehaviour
 
     private bool Grounded = true;
 
-    private bool slideMode = false;
     private float slideTimeCounter = 0;
 
     [SerializeField]

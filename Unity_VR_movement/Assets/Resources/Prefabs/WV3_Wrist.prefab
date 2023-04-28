@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 1220234889586862852}
   - component: {fileID: 3250788345539881161}
   m_Layer: 5
-  m_Name: WV2_Wrist
+  m_Name: WV3_Wrist
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -660,29 +660,55 @@ MonoBehaviour:
     m_Options:
     - m_Text: 0Squat to Walk
       m_Image: {fileID: 0}
-    - m_Text: 1Squat to Strafe
+    - m_Text: 1Squat to Move Diagonally
       m_Image: {fileID: 0}
-    - m_Text: 2Squat to Retreat
+    - m_Text: 2Squat to Strafe
       m_Image: {fileID: 0}
-    - m_Text: 3Squat to Jump Forward
+    - m_Text: 3Squat to Retreat
       m_Image: {fileID: 0}
-    - m_Text: 4Squat to Jump Straight Up
+    - m_Text: 4Squat to Jump Forward
       m_Image: {fileID: 0}
-    - m_Text: 5Squat to Jump and Slide (remember to squat again)
+    - m_Text: 5Squat to Jump Straight Up
       m_Image: {fileID: 0}
-    - m_Text: 6Jump to Move Forward
+    - m_Text: 6Jump to Jump and Slide
       m_Image: {fileID: 0}
-    - m_Text: 7Jump to Move Diagonally
+    - m_Text: 7Jump to Jump with headbob
       m_Image: {fileID: 0}
-    - m_Text: 8Jump to Strafe
+    - m_Text: 8Jump to Move Forward
       m_Image: {fileID: 0}
-    - m_Text: 9Jump to Move Back
+    - m_Text: 9Jump to Move Diagonally
       m_Image: {fileID: 0}
-    - m_Text: 10Jump to Jump Forward
+    - m_Text: 10Jump to Strafe
       m_Image: {fileID: 0}
-    - m_Text: 11Jump to Jump Straight Up
+    - m_Text: 11Jump to Move Back
       m_Image: {fileID: 0}
-    - m_Text: 12Jump to Jump Diagonally
+    - m_Text: 12Jump to Jump Forward
+      m_Image: {fileID: 0}
+    - m_Text: 13Jump to Jump Straight Up
+      m_Image: {fileID: 0}
+    - m_Text: 14Jump to Jump Diagonally
+      m_Image: {fileID: 0}
+    - m_Text: 15Standard XR Locomotion
+      m_Image: {fileID: 0}
+    - m_Text: 16Wagon of Instant Transmission
+      m_Image: {fileID: 0}
+    - m_Text: 17Wagon of Instant Velocity
+      m_Image: {fileID: 0}
+    - m_Text: 18Wagon of Acceleration
+      m_Image: {fileID: 0}
+    - m_Text: 19Wagon of Jerk
+      m_Image: {fileID: 0}
+    - m_Text: 20Wagon of Force
+      m_Image: {fileID: 0}
+    - m_Text: 21Armswing
+      m_Image: {fileID: 0}
+    - m_Text: 22Skateboard
+      m_Image: {fileID: 0}
+    - m_Text: 22Skateboard
+      m_Image: {fileID: 0}
+    - m_Text: 23Fall Up (Warning)
+      m_Image: {fileID: 0}
+    - m_Text: 24Fall Flat (Warning
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1378,6 +1404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc4d3fadcc8cd941bd2e9e8c4ab16d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  relativePath: /Script/Controllers/
 --- !u!1 &8970074300864129699
 GameObject:
   m_ObjectHideFlags: 0

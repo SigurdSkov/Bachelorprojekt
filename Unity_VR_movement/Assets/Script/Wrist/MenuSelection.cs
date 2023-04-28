@@ -1,5 +1,4 @@
 using Microsoft.Unity.VisualStudio.Editor;
-using MoveScriptSpace;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,7 +56,6 @@ public class MenuSelection : MonoBehaviour
 
         Character = transform.parent.parent.parent.parent.parent.GameObject(); //Har nok ændret sig
         RemoveActiveScript();
-        ActivateWagonVelocity();
     }
 
     // Update is called once per frame
@@ -190,8 +188,6 @@ public class MenuSelection : MonoBehaviour
     {
         Debug.Log("ActivateJumpSlide");
         Character.AddComponent<Squatjumpslide>();
-        //slide (less friction)
-        //Retain highest high
     }
 
     //7
@@ -289,18 +285,20 @@ public class MenuSelection : MonoBehaviour
     public void ActivateWagonForcemode()
     {
         Debug.Log("ActivateWagonForcemode");
+        Character.AddComponent<AddWagonForcemode>();
     }
 
     //21 sving med armene //Lav 4 sfære. Hvis der er collision imellem controller og ((ls0 && rs1) || (ls1 && rs0)), hvis flag hejst, bevæg frem. Tjek bool + Sæt timer til 0. Når timer er løbet ud uncheck bool
     public void ActivateArmSwing()
     {
         Debug.Log("ActivateArmSwing");
+        Character.AddComponent<Armswing>();
     }
     //22 Skateboard //Bevægelse afhængig af localx og localz - hastighed baseret på localx, rotationshastighed baseret på localz (genanvend den fra wagonvelocity)
     public void ActivateSkateboard()
     {
         Debug.Log("ActivateSkateboard");
-
+        Character.AddComponent<Skateboard>();
     }
 
     //Ubehagelige

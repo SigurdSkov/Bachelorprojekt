@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class velocitySet : MonoBehaviour
+public class sigurdForceModeSet : MonoBehaviour
 {
     Rigidbody wagonBody;
     GameObject speedHandle;
     GameObject turnHandle;
-    float speed = 5f;
+    float speed = 100f;
+    float rightSpeed = 0f;
+    float leftSpeed = 0f;
+    float maxSpeed = 5f;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +25,7 @@ public class velocitySet : MonoBehaviour
         //wagonBody.isKinematic = true;
 
         speedHandle = transform.GetChild(0).GetChild(0).gameObject;
-        turnHandle = transform.GetChild(1).GetChild(0).gameObject; //Actually tracks the lever
+        turnHandle = transform.GetChild(1).GetChild(0).gameObject;
     }
 
     // Update is called once per frame
@@ -30,30 +33,47 @@ public class velocitySet : MonoBehaviour
     {
         if (speedHandle.transform.localPosition.x > 0.1f)
         {
-            wagonBody.velocity = transform.right*speed;//new Vector3(1,0,0);
+            if (wagonBody.velocity.magnitude < maxSpeed)
+            {
+                wagonBody.AddForce(transform.right * speed, ForceMode.Acceleration);
+                Debug.Log("Moving with speed: " + wagonBody.velocity.magnitude);
+            }
         }
         else if (speedHandle.transform.localPosition.x < -0.1f)
         {
-            wagonBody.velocity = -transform.right*speed;//= new Vector3(-1, 0, 0);
+            if (wagonBody.velocity.magnitude < maxSpeed)
+            {
+                wagonBody.AddForce(-transform.right * speed, ForceMode.Acceleration);
+            }
         }
 
 
         if (turnHandle.transform.localPosition.x > 0.1f)
         {
-            //transform.transform.Rotate(vector3 eulers, new Quaternion(0,0,0,0));
-            transform.Rotate(new Vector3(0, 20, 0) * Time.deltaTime);
+            if (rightSpeed < 20)
+                rightSpeed += 0.2f;
+            transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed), 0) * Time.deltaTime);
         }
         else if (turnHandle.transform.localPosition.x < -0.1f)
         {
-            transform.Rotate(new Vector3(0, -20, 0) * Time.deltaTime);
+            if (leftSpeed < 20)
+                leftSpeed += 0.2f;
+            transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed), 0) * Time.deltaTime);
         }
+        else
+        {
+            transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed), 0) * Time.deltaTime);
+        }
+        if (rightSpeed > 0)
+            rightSpeed -= 0.1f;
+        if (leftSpeed > 0)
+            leftSpeed -= 0.1f;
     }
-
     private void OnDestroy()
     {
         foreach (Transform child in transform)
         {
-            if (GetComponent<AddWagonVelocitySet>() != null)
+            if (GetComponent<AddWagonJerkSet>() != null)
             {
                 Debug.Log(child + "    " + child.transform.parent);
                 child.transform.parent = null;
