@@ -137,7 +137,7 @@ public class TreePlanterScript : MonoBehaviour
             {
                 if (!((col == 4 && row == 4) || (col == 4 && row == 5) || (col == 5 && row == 4) || (col == 5 && row == 5)))
                 {
-                    Debug.Log("Column: " + col + "   " + "Row: " + row);
+                    //Debug.Log("Column: " + col + "   " + "Row: " + row);
                     Vector3 centerPos = new Vector3(startX + col * 2f * radius, 0f, startZ + row * 2f * radius);
                     for (int i = 0; i < numTrees; i++)
                     {

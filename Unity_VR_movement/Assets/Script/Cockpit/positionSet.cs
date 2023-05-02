@@ -13,11 +13,19 @@ public class positionSet : MonoBehaviour
     float turnTimer;
     float turnTimerSampleTime = 1000;
     bool turnAllowed = true;
+    float speed = 0f;
+    float turnSpeed = 0f;
+
+    float triggerAngleForward = 340;
+    float triggerAngleBackward = 20;
+    float angleDivisor;
     // Start is called before the first frame update
     void Start()
     {
         speedHandle = transform.GetChild(0).GetChild(0).gameObject;
         turnHandle = transform.GetChild(1).GetChild(0).gameObject; //Actually tracks the lever
+
+        angleDivisor = 45 - triggerAngleBackward;
     }
 
     // Update is called once per frame
@@ -26,29 +34,33 @@ public class positionSet : MonoBehaviour
         timer += Time.deltaTime * 1000;
         if (timer > sampleTime)
         {
-            if (speedHandle.transform.localEulerAngles.z < 320f && speedHandle.transform.localEulerAngles.z > 310f)
+            if (speedHandle.transform.localEulerAngles.z <= triggerAngleForward && speedHandle.transform.localEulerAngles.z >= 310f)
             {
-                transform.Translate(new Vector3(1F, 0, 0));
+                speed = (speedHandle.transform.localEulerAngles.z - triggerAngleForward) * -1 / angleDivisor;
+                transform.Translate(new Vector3(1F*speed, 0, 0));
                 //speedHandle.transform.Translate(new Vector3(0.1F, 0,0));
             }
-            else if (speedHandle.transform.localEulerAngles.z > 40f && speedHandle.transform.localEulerAngles.z < 50f)
+            else if (speedHandle.transform.localEulerAngles.z >= triggerAngleBackward && speedHandle.transform.localEulerAngles.z <= 50f)
             {
+                speed = (speedHandle.transform.localEulerAngles.z - triggerAngleBackward) / angleDivisor;
                 //transform.position = transform.position + new Vector3(-1F, 0, 0);
-                transform.Translate(new Vector3(-1F, 0, 0));
+                transform.Translate(new Vector3(-1F*speed, 0, 0));
                 //speedHandle.transform.Translate(new Vector3(-0.1F, 0, 0));
             }
             timer = 0;
 
 
-            if (turnAllowed == true && turnHandle.transform.localEulerAngles.z < 320f && turnHandle.transform.localEulerAngles.z > 310f) 
+            if (turnAllowed == true && turnHandle.transform.localEulerAngles.z <= triggerAngleForward && turnHandle.transform.localEulerAngles.z >= 310f) 
             {
                 //transform.transform.Rotate(vector3 eulers, new Quaternion(0,0,0,0));
-                transform.eulerAngles = transform.localEulerAngles + new Vector3(0, 36, 0);
+                turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleForward) * -1 / angleDivisor;
+                transform.eulerAngles = transform.localEulerAngles + new Vector3(0, 36 * turnSpeed, 0);
                 turnAllowed = false;
             }
-            else if (turnAllowed == true && turnHandle.transform.localEulerAngles.z > 40f && turnHandle.transform.localEulerAngles.z < 50f)
+            else if (turnAllowed == true && turnHandle.transform.localEulerAngles.z >= triggerAngleBackward && turnHandle.transform.localEulerAngles.z <= 50f)
             {
-                transform.eulerAngles = transform.localEulerAngles + new Vector3(0, -36, 0);
+                turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleBackward) / angleDivisor;
+                transform.eulerAngles = transform.localEulerAngles + new Vector3(0, -36 * turnSpeed, 0);
                 turnAllowed = false;
             }
         }

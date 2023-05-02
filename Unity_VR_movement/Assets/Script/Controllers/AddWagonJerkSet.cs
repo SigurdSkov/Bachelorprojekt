@@ -12,7 +12,7 @@ public class AddWagonJerkSet : MonoBehaviour
     void Start()
     {
         prefabWagon = Resources.Load<GameObject>("Prefabs/W1_wagon_position");
-        instantiatedWagon = Instantiate(prefabWagon, gameObject.transform.position - new Vector3(0, 0.3F, 0), new Quaternion(0, transform.GetChild(0).GetChild(0).GetChild(0).rotation.y, 0, transform.GetChild(0).GetChild(0).GetChild(0).rotation.w));
+        instantiatedWagon = Instantiate(prefabWagon, gameObject.transform.position - new Vector3(0, 0.3F, 0), transform.rotation);
         transform.parent = instantiatedWagon.transform;
         instantiatedWagon.AddComponent<jerkSet>();
         transform.AddComponent<FixedJoint>(); //untested

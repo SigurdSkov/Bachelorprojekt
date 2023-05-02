@@ -7,10 +7,16 @@ public class sigurdForceModeSet : MonoBehaviour
     Rigidbody wagonBody;
     GameObject speedHandle;
     GameObject turnHandle;
-    float speed = 100f;
+    float baseSpeed = 90f;
+    float speed = 0f;
+    float turnSpeed = 0f;
     float rightSpeed = 0f;
     float leftSpeed = 0f;
     float maxSpeed = 5f;
+
+    float triggerAngleForward = 340;
+    float triggerAngleBackward = 20;
+    float angleDivisor;
 
     // Start is called before the first frame update
     void Start()
@@ -26,39 +32,45 @@ public class sigurdForceModeSet : MonoBehaviour
 
         speedHandle = transform.GetChild(0).GetChild(0).gameObject;
         turnHandle = transform.GetChild(1).GetChild(0).gameObject;
+
+        angleDivisor = 45 - triggerAngleBackward;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (speedHandle.transform.localEulerAngles.z < 320f && speedHandle.transform.localEulerAngles.z > 310f)
+        if (speedHandle.transform.localEulerAngles.z <= triggerAngleForward && speedHandle.transform.localEulerAngles.z >= 310f)
         {
             if (wagonBody.velocity.magnitude < maxSpeed)
             {
-                wagonBody.AddForce(transform.right * speed, ForceMode.Acceleration);
+                speed = ((speedHandle.transform.localEulerAngles.z - triggerAngleForward) * -1) / angleDivisor;
+                wagonBody.AddForce(transform.right * baseSpeed * speed, ForceMode.Acceleration);
                 Debug.Log("Moving with speed: " + wagonBody.velocity.magnitude);
             }
         }
-        else if (speedHandle.transform.localEulerAngles.z > 40f && speedHandle.transform.localEulerAngles.z < 50f)
+        else if (speedHandle.transform.localEulerAngles.z >= triggerAngleBackward && speedHandle.transform.localEulerAngles.z <= 50f)
         {
+            speed = (speedHandle.transform.localEulerAngles.z - triggerAngleBackward) / angleDivisor;
             if (wagonBody.velocity.magnitude < maxSpeed)
             {
-                wagonBody.AddForce(-transform.right * speed, ForceMode.Acceleration);
+                wagonBody.AddForce(-transform.right * baseSpeed * speed, ForceMode.Acceleration);
             }
         }
 
 
-        if (turnHandle.transform.localEulerAngles.z < 320f && turnHandle.transform.localEulerAngles.z > 310f)
+        if (turnHandle.transform.localEulerAngles.z <= triggerAngleForward && turnHandle.transform.localEulerAngles.z >= 310f)
         {
             if (rightSpeed < 20)
                 rightSpeed += 0.2f;
-            transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed), 0) * Time.deltaTime);
+            turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleForward) * -1 / angleDivisor;
+            transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * turnSpeed, 0) * Time.deltaTime);
         }
-        else if (turnHandle.transform.localEulerAngles.z > 40f && turnHandle.transform.localEulerAngles.z < 50f)
+        else if (turnHandle.transform.localEulerAngles.z >= triggerAngleBackward && turnHandle.transform.localEulerAngles.z <= 50f)
         {
             if (leftSpeed < 20)
                 leftSpeed += 0.2f;
-            transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed), 0) * Time.deltaTime);
+            turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleForward) / angleDivisor;
+            transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * turnSpeed, 0) * Time.deltaTime);
         }
         else
         {

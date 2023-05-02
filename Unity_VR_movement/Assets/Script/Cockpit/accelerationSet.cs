@@ -12,6 +12,10 @@ public class accelerationSet : MonoBehaviour
     float rightSpeed;
     float leftSpeed;
 
+    float triggerAngleForward = 330;
+    float triggerAngleBackward = 30;
+    float angleDivisor;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,20 +30,21 @@ public class accelerationSet : MonoBehaviour
 
         speedHandle = transform.GetChild(0).GetChild(0).gameObject;
         turnHandle = transform.GetChild(1).GetChild(0).gameObject; //Actually tracks the lever
+
+        angleDivisor = 45 - triggerAngleBackward;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (speedHandle.transform.localEulerAngles.z < 320f && speedHandle.transform.localEulerAngles.z > 310f)
+        if (speedHandle.transform.localEulerAngles.z <= triggerAngleForward && speedHandle.transform.localEulerAngles.z >= 310f)
         {
             if (forwardSpeed < 5)
                 forwardSpeed += 0.05f;
             wagonBody.velocity = transform.right * (forwardSpeed - backwardSpeed);//new Vector3(1,0,0);
-            Debug.Log("Moving");
             //previousVelocity = wagonBody.velocity;
         }
-        else if (speedHandle.transform.localEulerAngles.z > 40f && speedHandle.transform.localEulerAngles.z < 50f)
+        else if (speedHandle.transform.localEulerAngles.z >= triggerAngleBackward && speedHandle.transform.localEulerAngles.z <= 50f)
         {
             if (backwardSpeed < 5)
                 backwardSpeed += 0.05f;
@@ -57,16 +62,18 @@ public class accelerationSet : MonoBehaviour
             backwardSpeed -= 0.01f;
 
 
-        if (turnHandle.transform.localEulerAngles.z < 320f && turnHandle.transform.localEulerAngles.z > 310f)
+        if (turnHandle.transform.localEulerAngles.z <= triggerAngleForward && turnHandle.transform.localEulerAngles.z >= 310f)
         {
             if (rightSpeed < 20)
                 rightSpeed += 0.2f;
+            //turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleForward) * -1 / 15;
             transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * 0.5f, 0) * Time.deltaTime);
         }
-        else if (turnHandle.transform.localEulerAngles.z > 40f && turnHandle.transform.localEulerAngles.z < 50f)
+        else if (turnHandle.transform.localEulerAngles.z >= triggerAngleBackward && turnHandle.transform.localEulerAngles.z <= 50f)
         {
             if (leftSpeed < 20)
                 leftSpeed += 0.2f;
+            //turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleForward) * 15;
             transform.Rotate(new Vector3(0, (rightSpeed-leftSpeed)*0.5f, 0) * Time.deltaTime);
         }
         else
