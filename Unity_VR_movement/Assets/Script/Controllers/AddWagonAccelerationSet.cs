@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AddWagonAccelerationSet : MonoBehaviour
@@ -14,7 +15,14 @@ public class AddWagonAccelerationSet : MonoBehaviour
         instantiatedWagon = Instantiate(prefabWagon, gameObject.transform.position - new Vector3(0, 0.3F, 0), transform.rotation);
         transform.parent = instantiatedWagon.transform;
         instantiatedWagon.AddComponent<accelerationSet>();
+//        transform.AddComponent<FixedJoint>(); //untested
+//        transform.GetComponent<FixedJoint>().connectedBody = instantiatedWagon.GetComponent<Rigidbody>(); //untested
         Debug.Log("Made wagon");
+    }
+
+    private void Update()
+    {
+        transform.position = instantiatedWagon.transform.position + new Vector3(0, 0.5f, 0);
     }
 
     void OnDestroy()

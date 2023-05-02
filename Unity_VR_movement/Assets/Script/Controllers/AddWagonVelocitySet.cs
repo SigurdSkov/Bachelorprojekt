@@ -19,6 +19,11 @@ public class AddWagonVelocitySet : MonoBehaviour
         Debug.Log("Made wagon");
     }
 
+    private void Update()
+    {
+        transform.position = instantiatedWagon.transform.position + new Vector3(0, 0.5f, 0);
+    }
+
     void OnDestroy()
     {
         foreach (Transform child in instantiatedWagon.transform)

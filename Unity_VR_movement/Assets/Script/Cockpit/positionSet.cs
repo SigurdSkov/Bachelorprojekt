@@ -26,27 +26,27 @@ public class positionSet : MonoBehaviour
         timer += Time.deltaTime * 1000;
         if (timer > sampleTime)
         {
-            if (speedHandle.transform.localPosition.x > 0.1f)
+            if (speedHandle.transform.localEulerAngles.z < 320f && speedHandle.transform.localEulerAngles.z > 310f)
             {
                 transform.Translate(new Vector3(1F, 0, 0));
-                speedHandle.transform.Translate(new Vector3(0.1F, 0,0));
+                //speedHandle.transform.Translate(new Vector3(0.1F, 0,0));
             }
-            else if (speedHandle.transform.localPosition.x < -0.1f)
+            else if (speedHandle.transform.localEulerAngles.z > 40f && speedHandle.transform.localEulerAngles.z < 50f)
             {
                 //transform.position = transform.position + new Vector3(-1F, 0, 0);
                 transform.Translate(new Vector3(-1F, 0, 0));
-                speedHandle.transform.Translate(new Vector3(-0.1F, 0, 0));
+                //speedHandle.transform.Translate(new Vector3(-0.1F, 0, 0));
             }
             timer = 0;
 
 
-            if (turnHandle.transform.localPosition.x > 0.1f && turnAllowed == true) 
+            if (turnAllowed == true && turnHandle.transform.localEulerAngles.z < 320f && turnHandle.transform.localEulerAngles.z > 310f) 
             {
                 //transform.transform.Rotate(vector3 eulers, new Quaternion(0,0,0,0));
                 transform.eulerAngles = transform.localEulerAngles + new Vector3(0, 36, 0);
                 turnAllowed = false;
             }
-            else if (turnHandle.transform.localPosition.x < -0.1f && turnAllowed == true)
+            else if (turnAllowed == true && turnHandle.transform.localEulerAngles.z > 40f && turnHandle.transform.localEulerAngles.z < 50f)
             {
                 transform.eulerAngles = transform.localEulerAngles + new Vector3(0, -36, 0);
                 turnAllowed = false;

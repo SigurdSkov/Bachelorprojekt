@@ -34,7 +34,7 @@ public class jerkSet : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (speedHandle.transform.localPosition.x > 0.1f)
+        if (speedHandle.transform.localEulerAngles.z < 320f && speedHandle.transform.localEulerAngles.z > 310f)
         {
             if (wagonBody.velocity.magnitude < maxSpeed)
             {
@@ -47,7 +47,7 @@ public class jerkSet : MonoBehaviour
                 wagonBody.velocity = previousVelocity;
             }
         }
-        else if (speedHandle.transform.localPosition.x < -0.1f)
+        else if (speedHandle.transform.localEulerAngles.z > 40f && speedHandle.transform.localEulerAngles.z < 50f)
         {
             if (wagonBody.velocity.magnitude < maxSpeed)
             {
@@ -71,13 +71,13 @@ public class jerkSet : MonoBehaviour
             backwardSpeed -= 0.01f;
 
 
-        if (turnHandle.transform.localPosition.x > 0.1f)
+        if (turnHandle.transform.localEulerAngles.z < 320f && turnHandle.transform.localEulerAngles.z > 310f)
         {
             if (rightSpeed < 20)
                 rightSpeed += 0.2f;
             transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * 0.5f, 0) * Time.deltaTime);
         }
-        else if (turnHandle.transform.localPosition.x < -0.1f)
+        else if (turnHandle.transform.localEulerAngles.z > 40f && turnHandle.transform.localEulerAngles.z < 50f)
         {
             if (leftSpeed < 20)
                 leftSpeed += 0.2f;

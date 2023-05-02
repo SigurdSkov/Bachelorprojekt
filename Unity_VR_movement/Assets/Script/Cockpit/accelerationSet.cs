@@ -31,17 +31,18 @@ public class accelerationSet : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (speedHandle.transform.localPosition.x > 0.1f)
+        if (speedHandle.transform.localEulerAngles.z < 320f && speedHandle.transform.localEulerAngles.z > 310f)
         {
             if (forwardSpeed < 5)
-                forwardSpeed += 0.02f;
+                forwardSpeed += 0.05f;
             wagonBody.velocity = transform.right * (forwardSpeed - backwardSpeed);//new Vector3(1,0,0);
+            Debug.Log("Moving");
             //previousVelocity = wagonBody.velocity;
         }
-        else if (speedHandle.transform.localPosition.x < -0.1f)
+        else if (speedHandle.transform.localEulerAngles.z > 40f && speedHandle.transform.localEulerAngles.z < 50f)
         {
             if (backwardSpeed < 5)
-                backwardSpeed += 0.02f;
+                backwardSpeed += 0.05f;
             wagonBody.velocity = transform.right * (forwardSpeed - backwardSpeed);//= new Vector3(-1, 0, 0);
             //previousVelocity = wagonBody.velocity;
         }
@@ -56,13 +57,13 @@ public class accelerationSet : MonoBehaviour
             backwardSpeed -= 0.01f;
 
 
-        if (turnHandle.transform.localPosition.x > 0.1f)
+        if (turnHandle.transform.localEulerAngles.z < 320f && turnHandle.transform.localEulerAngles.z > 310f)
         {
             if (rightSpeed < 20)
                 rightSpeed += 0.2f;
             transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * 0.5f, 0) * Time.deltaTime);
         }
-        else if (turnHandle.transform.localPosition.x < -0.1f)
+        else if (turnHandle.transform.localEulerAngles.z > 40f && turnHandle.transform.localEulerAngles.z < 50f)
         {
             if (leftSpeed < 20)
                 leftSpeed += 0.2f;
