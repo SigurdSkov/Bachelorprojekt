@@ -9,7 +9,7 @@ public class Squatjumpslide : MonoBehaviour
     private double timeCounter = 0; //Count up
     private double sendRate = 4000; // save position every 4000 milliseconds (4 seconds)
     private float highestHigh = float.MinValue;
-    private float SquatThreshold = 0.35f; // 0.2 units reduction in height is considered a squat
+    private float SquatThreshold = 0.25f; // 0.2 units reduction in height is considered a squat
     private float PreviousCameraPositionY = 0;
     private bool SquatStatus = false;
     Transform CameraTransform;
@@ -37,7 +37,6 @@ public class Squatjumpslide : MonoBehaviour
         CameraTransform = gameObject.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0);
         PreviousCameraPositionY = CameraTransform.transform.position.y;
         body = GetComponent<Rigidbody>();
-        body.drag = 0;
     }
 
     // Update is called once per frame

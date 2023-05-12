@@ -103,7 +103,7 @@ public class TreePlanterScript : MonoBehaviour
     private List<GameObject> listOfInstantiatedTrees;
 
     public GameObject treePrefab;
-    public int numTrees = 10;
+    public int numTrees = 1000;
     public float radius = 100f;
     public LayerMask layerMask;
     // Start is called before the first frame update

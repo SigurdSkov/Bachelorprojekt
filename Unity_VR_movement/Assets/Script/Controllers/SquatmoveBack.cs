@@ -11,12 +11,12 @@ public class SquatmoveBack : MonoBehaviour
     private double timeCounter = 0; //Count up
     private double sendRate = 4000; // save position every 4000 milliseconds (4 seconds)
     private float highestHigh = float.MinValue;
-    private float SquatThreshold = 0.35f; // 0.2 units reduction in height is considered a squat
+    private float SquatThreshold = 0.25f; // 0.2 units reduction in height is considered a squat
     private float PreviousCameraPositionY = 0;
     Transform CameraTransform;
 
     [SerializeField]
-    private float speed = 13;
+    private float speed = 30;
     Rigidbody body;
 
     private float CurrentPos;

@@ -18,7 +18,7 @@ public class Jumpjumpup : MonoBehaviour
     Rigidbody body;
     float currentHeight = 0;
     [SerializeField]
-    float speed = 2F;
+    float speed = 1F;
     bool pressed = false;
 
     private UnityEngine.XR.InputDevice rightHandDevice, leftHandDevice;
@@ -27,7 +27,7 @@ public class Jumpjumpup : MonoBehaviour
         CameraTransform = gameObject.transform.GetChild(0).GetChild(0).GetChild(0).transform;
         body = gameObject.GetComponent<Rigidbody>();
         body.drag = 1;
-        body.mass = 2;
+        body.mass = 5;
     }
 
     private void Update()
@@ -61,6 +61,12 @@ public class Jumpjumpup : MonoBehaviour
             StandardHeight = currentHeight; //localposition, because absolute breaks when you hit a hill
             Debug.Log("Button input detected: " + StandardHeight);
         }
+    }
+
+    private void OnDestroy()
+    {
+        body.mass = 1;
+        body.drag = 0;
     }
 }
 

@@ -76,6 +76,11 @@ public class Jumpmovestrafe : MonoBehaviour
             StandardHeight = currentHeight; //localposition, because absolute breaks when you hit a hill
         }
     }
+    private void OnDestroy()
+    {
+        body.mass = 1;
+        body.drag = 0;
+    }
 }
 
 

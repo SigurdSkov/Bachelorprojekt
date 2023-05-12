@@ -63,6 +63,12 @@ public class Jumpmoveback : MonoBehaviour
             Debug.Log("Button input detected: " + StandardHeight);
         }
     }
+
+    private void OnDestroy()
+    {
+        body.mass = 1;
+        body.drag = 0;
+    }
 }
 
 

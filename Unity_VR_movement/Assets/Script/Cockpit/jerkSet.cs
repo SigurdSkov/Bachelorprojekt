@@ -113,11 +113,11 @@ public class jerkSet : MonoBehaviour
             turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleForward) * -1 / angleDivisor;
             transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * 0.5f * turnSpeed, 0) * Time.deltaTime);
         }
-        else if (turnHandle.transform.localEulerAngles.z >= 40f && turnHandle.transform.localEulerAngles.z <= 50f)
+        else if (turnHandle.transform.localEulerAngles.z >= triggerAngleBackward && turnHandle.transform.localEulerAngles.z <= 50f)
         {
             if (leftSpeed < 20)
                 leftSpeed += 0.2f;
-            turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleForward) / angleDivisor;
+            turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleBackward) / angleDivisor;
             transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * 0.5f * turnSpeed, 0) * Time.deltaTime);
         }
         else

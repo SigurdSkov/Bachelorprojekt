@@ -23,9 +23,13 @@ public class Skateboard : MonoBehaviour
         body = GetComponent<Rigidbody>();
         skateBoard = GameObject.CreatePrimitive(PrimitiveType.Cube);
         //skateBoard = Instantiate(cube);
-        skateBoard.transform.parent = transform;
-        skateBoard.transform.localPosition = new Vector3(0,-0.5f,0);
+        Transform cam = transform;//.GetChild(0);//.GetChild(0).GetChild(0); //The camera
+        skateBoard.transform.parent = cam; //The camera
+        //skateBoard.transform.localPosition = new Vector3(0,-1.5f,0);
+        skateBoard.transform.position = new Vector3(cam.position.x, 0.1f, cam.position.z);
         skateBoard.transform.localScale = new Vector3(0.2f, 0.01f, 0.6f);
+        skateBoard.transform.parent = transform;
+        skateBoard.transform.rotation = new Quaternion (0,0,0,0);
     }
 
     // Update is called once per frame

@@ -39124,9 +39124,9 @@ MonoBehaviour:
   tree43: {fileID: 191266, guid: c44bd9bdc114d4a60932c0087d9d1732, type: 3}
   tree44: {fileID: 188006, guid: c6b7fb383a3534b039692b5485b6e739, type: 3}
   tree45: {fileID: 137650, guid: 826b6a0b570e8460990010fa615b5a2a, type: 3}
-  treePrefab: {fileID: 0}
+  treePrefab: {fileID: 8790522339504496268, guid: 27ecdb7e65f6dd64194f49d16636a2b4, type: 3}
   numTrees: 100
-  radius: 200
+  radius: 100
   layerMask:
     serializedVersion: 2
     m_Bits: 0

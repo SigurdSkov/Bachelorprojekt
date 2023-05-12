@@ -58,28 +58,51 @@ public class sigurdForceModeSet : MonoBehaviour
         }
 
 
+
         if (turnHandle.transform.localEulerAngles.z <= triggerAngleForward && turnHandle.transform.localEulerAngles.z >= 310f)
         {
             if (rightSpeed < 20)
                 rightSpeed += 0.2f;
-            turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleForward) * -1 / angleDivisor;
-            transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * turnSpeed, 0) * Time.deltaTime);
+            //turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleForward) * -1 / 15;
+            transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * 0.5f, 0) * Time.deltaTime);
         }
         else if (turnHandle.transform.localEulerAngles.z >= triggerAngleBackward && turnHandle.transform.localEulerAngles.z <= 50f)
         {
             if (leftSpeed < 20)
                 leftSpeed += 0.2f;
-            turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleForward) / angleDivisor;
-            transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * turnSpeed, 0) * Time.deltaTime);
+            //turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleForward) * 15;
+            transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * 0.5f, 0) * Time.deltaTime);
         }
         else
         {
-            transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed), 0) * Time.deltaTime);
+            transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * 0.5f, 0) * Time.deltaTime);
         }
         if (rightSpeed > 0)
             rightSpeed -= 0.1f;
         if (leftSpeed > 0)
             leftSpeed -= 0.1f;
+        //if (turnHandle.transform.localEulerAngles.z <= triggerAngleForward && turnHandle.transform.localEulerAngles.z >= 310f)
+        //{
+        //    if (rightSpeed < 20)
+        //        rightSpeed += 0.2f;
+        //    turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleForward) * -1 / angleDivisor;
+        //    transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * turnSpeed, 0) * Time.deltaTime);
+        //}
+        //else if (turnHandle.transform.localEulerAngles.z >= triggerAngleBackward && turnHandle.transform.localEulerAngles.z <= 50f)
+        //{
+        //    if (leftSpeed < 20)
+        //        leftSpeed += 0.2f;
+        //    turnSpeed = (turnHandle.transform.localEulerAngles.z - triggerAngleForward) / angleDivisor;
+        //    transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed) * turnSpeed, 0) * Time.deltaTime);
+        //}
+        //else
+        //{
+        //    transform.Rotate(new Vector3(0, (rightSpeed - leftSpeed), 0) * Time.deltaTime);
+        //}
+        //if (rightSpeed > 0)
+        //    rightSpeed -= 0.1f;
+        //if (leftSpeed > 0)
+        //    leftSpeed -= 0.1f;
     }
     private void OnDestroy()
     {

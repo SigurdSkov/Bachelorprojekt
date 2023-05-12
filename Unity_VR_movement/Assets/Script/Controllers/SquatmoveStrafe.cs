@@ -27,7 +27,7 @@ public class SquatmoveStrafe : MonoBehaviour
     private double sendRate = 4000; // save position every 4000 milliseconds (4 seconds)
     private float highestHigh = float.MinValue;
     //private float lowestLow = float.MaxValue;
-    private float SquatThreshold = 0.35f; // 0.2 units reduction in height is considered a squat
+    private float SquatThreshold = 0.25f; // 0.2 units reduction in height is considered a squat
     //private float squatLength = 1f; // length of squat motion
     //private float squatDist = 0f; // distance moved during a squat
     //private bool IsSquatting = false; // flag to indicate if currently in a squat
@@ -37,7 +37,7 @@ public class SquatmoveStrafe : MonoBehaviour
     Transform CameraTransform;
 
     [SerializeField]
-    private float speed = 20;
+    private float speed = 40;
 
     Rigidbody body;
 

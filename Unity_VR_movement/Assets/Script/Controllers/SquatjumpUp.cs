@@ -9,7 +9,7 @@ public class SquatjumpUp : MonoBehaviour
     private double timeCounter = 0;
     private double sendRate = 4000;
     private float highestHigh = float.MinValue;
-    private float SquatThreshold = 0.35f;
+    private float SquatThreshold = 0.25f;
     private float PreviousCameraPositionY = 0;
     private bool SquatStatus = false;
     Transform CameraTransform;
@@ -30,7 +30,6 @@ public class SquatjumpUp : MonoBehaviour
         CameraTransform = gameObject.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0);
         PreviousCameraPositionY = CameraTransform.transform.position.y;
         body = GetComponent<Rigidbody>();
-        body.drag = 0;
     }
 
     // Update is called once per frame
